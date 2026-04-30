@@ -42,11 +42,11 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
       <div className="certifies-that">This certifies that</div>
 
       <div className="business-name-box">
-        <h2 className="business-name">{data.business_name || 'ABI FISH DEALER'}</h2>
+        <h2 className="business-name">{data.business_name || 'BUSINESS NAME'}</h2>
       </div>
 
       <div className="business-location">
-        {data.business_location || 'ZONE 4, BULAN, SORSOGON'}
+        {data.business_location || 'ADDRESS'}
       </div>
 
       <div className="main-body-text">
@@ -60,7 +60,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
       <div className="issued-to">This certificate issued to</div>
 
       <div className="recipient-name-box">
-        <h2 className="recipient-name">{data.recipient_name || 'ABIGAIL R. METEORO'}</h2>
+        <h2 className="recipient-name">{data.recipient_name || 'BROKER NAME'}</h2>
       </div>
 
       <div className="role-box">
@@ -68,7 +68,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
       </div>
 
       <div className="validity-text">
-        is valid from <span className="validity-box">{data.validity_start || 'March 05, 2026'} - {data.validity_end || 'March 05, 2027'}</span> subject to continuing<br />
+        is valid from <span className="validity-box">{data.validity_start || 'MM/DD/YYYY'} - {data.validity_end || 'March 05, 2027'}</span> subject to continuing<br />
         compliance with the above mentioned regulation of the the agency unless<br />
         voluntarily cancelled. In testimony whereof, I hereby sign this
       </div>
@@ -81,7 +81,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
 
       <div className="signature-section">
         <div className="signature-image-container">
-           <img src="/signature.png" className="signature-image" alt="Signature" />
+          <img src="/signature.png" className="signature-image" alt="Signature" />
         </div>
         <p className="signer-name">FRANCISCO ROMEO G. ESCANDOR JR</p>
         <p className="signer-title">Officer-in-Charge</p>
@@ -89,7 +89,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
 
       <div className="permit-id-blue-box">
         <div className="permit-id-inner-box">
-          {data.permit_id || 'B-PTCB-B-26-0034'}
+          {data.permit_id || 'B-PTCB-B-00-0000'}
         </div>
       </div>
 
@@ -121,8 +121,8 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
             <span className="field-label">No. of Box(es):</span>
             <span className="field-value">{data.no_of_boxes}</span>
           </div>
-          <div className="footer-field">
-            <span className="field-label">Time/Date :</span>
+          <div className="footer-field" >
+            <span className="field-label" >Time/Date :</span>
             <span className="field-value">{data.time_date}</span>
           </div>
           <div className="footer-field">

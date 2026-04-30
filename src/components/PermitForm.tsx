@@ -32,7 +32,17 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
 const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEditing }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    onChange({ ...data, [name]: value });
+    let newData = { ...data, [name]: value };
+
+    if (name === 'time_date' && value) {
+      const date = new Date(value);
+      date.setDate(date.getDate() + 2);
+      // Format back to YYYY-MM-DDTHH:mm for datetime-local
+      const validUntil = date.toISOString().slice(0, 16);
+      newData.valid_until = validUntil;
+    }
+
+    onChange(newData);
   };
 
   return (
@@ -101,8 +111,8 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEdi
           <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} />
           <InputGroup label="Destination" name="destination" value={data.destination} onChange={handleChange} />
           <InputGroup label="No. of Box(es)" name="no_of_boxes" value={data.no_of_boxes} onChange={handleChange} />
-          <InputGroup label="Time / Date" name="time_date" value={data.time_date} onChange={handleChange} />
-          <InputGroup label="Valid Until" name="valid_until" value={data.valid_until} onChange={handleChange} />
+          <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
+          <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />
           <InputGroup label="Remarks" name="remarks" value={data.remarks} onChange={handleChange} />
         </div>
       </div>

@@ -14,7 +14,7 @@
     line-height: 1.4;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 @media print {
@@ -22,7 +22,7 @@
         size: A4;
         margin: 0;
     }
-    
+
     /* Hide EVERYTHING by default */
     body * {
         visibility: hidden;
@@ -31,9 +31,10 @@
     /* Specifically show the certificate and ALL its parents */
     .certificate-container,
     .certificate-container *,
-    .certificate-container-parent, /* We will add this class if needed */
-    main, 
-    #root, 
+    .certificate-container-parent,
+    /* We will add this class if needed */
+    main,
+    #root,
     #__next {
         visibility: visible !important;
     }
@@ -104,7 +105,7 @@
 
 .business-name-box {
     border: none;
-    padding: 5px 20px;
+    /* padding: 5px 20px; */
     margin: 5px auto;
     width: fit-content;
     text-align: center;
@@ -116,6 +117,7 @@
     font-size: 24pt;
     text-transform: uppercase;
     margin: 0;
+    margin-bottom: -10px;
 }
 
 .business-location {
@@ -144,7 +146,7 @@
 
 .recipient-name-box {
     border: none;
-    padding: 5px 30px;
+    /* padding: 5px 30px; */
     margin: 5px auto;
     width: fit-content;
     text-align: center;
@@ -156,11 +158,14 @@
     font-size: 20pt;
     text-transform: uppercase;
     margin: 0;
+    font-style: bold;
+    margin-bottom: -10px;
 }
 
 .role-box {
     border: none;
-    padding: 2px 10px;
+    /* padding: 2px 10px; */
+    margin-top: -10px;
     margin: 5px auto;
     width: fit-content;
     text-align: center;
@@ -195,6 +200,7 @@
     text-align: center;
     font-size: 11pt;
     margin-bottom: 30px;
+    margin-top: -20px;
 }
 
 .date-box {
@@ -213,20 +219,20 @@
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
+    width: 90px;
     opacity: 0.8;
 }
 
 .signer-name {
     font-weight: bold;
-    font-size: 12pt;
+    font-size: 10pt;
     margin: 0;
     text-transform: uppercase;
 }
 
 .signer-title {
     font-style: italic;
-    font-size: 10pt;
+    font-size: 8pt;
     margin: 0;
 }
 
@@ -246,8 +252,8 @@
 
 .permit-id-inner-box {
     border: none;
-    background: white;
-    color: #0000ff;
+    background: #0000ff;
+    color: white;
     padding: 2px 20px;
     font-family: 'Times New Roman', Times, serif;
     font-weight: 900;
@@ -296,7 +302,7 @@
     background: #3b82f6 !important;
     color: white !important;
     padding: 8px 30px;
-    width: 200px;
+    width: 250px;
     text-align: center;
     font-weight: bold;
     font-size: 10pt;
