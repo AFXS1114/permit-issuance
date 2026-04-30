@@ -231,8 +231,8 @@
 }
 
 .permit-id-blue-box {
-    background: #0000ff;
-    color: white;
+    background: #0000ff !important;
+    color: white !important;
     padding: 5px 15px;
     width: 100%;
     display: flex;
@@ -240,6 +240,8 @@
     align-items: center;
     margin: 10px 0;
     box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .permit-id-inner-box {
@@ -291,8 +293,8 @@
 }
 
 .certified-true-copy-box {
-    background: #3b82f6;
-    color: white;
+    background: #3b82f6 !important;
+    color: white !important;
     padding: 8px 30px;
     width: 200px;
     text-align: center;
@@ -300,6 +302,8 @@
     font-size: 10pt;
     text-transform: uppercase;
     margin-bottom: 40px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .footer-signature {
