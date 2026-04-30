@@ -40,6 +40,20 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
     }
   };
 
+  const formatLongDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    try {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-PH', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
   return (
     <div className="certificate-container">
       <div className="header">
@@ -85,7 +99,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
       </div>
 
       <div className="validity-text">
-        is valid from <span className="validity-box">{data.validity_start || 'MM/DD/YYYY'} - {data.validity_end || 'March 05, 2027'}</span> subject to continuing<br />
+        is valid from <span className="validity-box">{formatLongDate(data.validity_start) || 'MMMM DD, YYYY'} - {formatLongDate(data.validity_end) || 'March 05, 2027'}</span> subject to continuing<br />
         compliance with the above mentioned regulation of the the agency unless<br />
         voluntarily cancelled. In testimony whereof, I hereby sign this
       </div>
@@ -126,8 +140,6 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
                 ))}
             </span>
           </div>
-          <div className="footer-field"><span className="field-label"></span><span className="field-value"></span></div>
-          <div className="footer-field"><span className="field-label"></span><span className="field-value"></span></div>
           <div className="footer-field">
             <span className="field-label">Origin :</span>
             <span className="field-value">{data.origin}</span>
