@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
 import PermitForm from '@/components/PermitForm';
-import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock } from 'lucide-react';
+import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X } from 'lucide-react';
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);
@@ -45,6 +45,9 @@ export default function Home() {
     validity_end: '',
     permit_id: ''
   });
+  const [destinations, setDestinations] = useState<any[]>([]);
+  const [showDestModal, setShowDestModal] = useState(false);
+  const [newDest, setNewDest] = useState('');
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
 
   useEffect(() => {
@@ -68,7 +71,10 @@ export default function Home() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) fetchPermits();
+      if (session) {
+        fetchPermits();
+        fetchDestinations();
+      }
     });
     return () => {
       clearTimeout(timeoutId);
@@ -98,6 +104,37 @@ export default function Home() {
       .order('business_name', { ascending: true });
 
     if (error) console.error('Error fetching brokers:', error);
+    else setBrokers(data || []);
+  };
+
+  const fetchDestinations = async () => {
+    const { data, error } = await supabase
+      .from('rec_destinations')
+      .select('*')
+      .order('destination', { ascending: true });
+
+    if (error) console.error('Error fetching destinations:', error);
+    else setDestinations(data || []);
+  };
+
+  const handleAddDestination = async () => {
+    if (!newDest.trim()) return;
+    
+    try {
+      const { error } = await supabase
+        .from('rec_destinations')
+        .insert([{ destination: newDest.toUpperCase() }]);
+
+      if (error) throw error;
+      
+      showToast('Destination added successfully');
+      setNewDest('');
+      setShowDestModal(false);
+      fetchDestinations();
+    } catch (error: any) {
+      showToast(error.message, 'error');
+    }
+  };
     else setBrokers(data || []);
   };
 
@@ -257,10 +294,17 @@ export default function Home() {
             </nav>
             <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
             <button 
-              onClick={() => { setView('select-broker'); resetForm(); }}
+              onClick={() => { setView('select-broker'); resetForm(); fetchBrokers(); fetchDestinations(); }}
               className="bg-slate-900 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 hover:bg-slate-800 transition shadow-lg shadow-slate-200 active:scale-95"
             >
               <Plus className="w-4 h-4" /> <span className="font-semibold text-sm">New Outgoing</span>
+            </button>
+            <button 
+              onClick={() => setShowDestModal(true)}
+              className="bg-blue-50 text-blue-600 p-2.5 rounded-xl hover:bg-blue-100 transition active:scale-95 border border-blue-100"
+              title="Manage Destinations"
+            >
+              <MapPin className="w-4 h-4" />
             </button>
             <button 
               onClick={() => supabase.auth.signOut()}
@@ -502,6 +546,7 @@ export default function Home() {
                   data={formData} 
                   onChange={setFormData} 
                   onSubmit={handleSave} 
+                  destinations={destinations}
                   isEditing={view === 'edit'}
                 />
               </div>
@@ -531,6 +576,50 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Destination Management Modal */}
+      {showDestModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-[2rem] p-8 w-full max-w-md shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-slate-800">Add Destination</h3>
+              <button onClick={() => setShowDestModal(false)} className="text-slate-400 hover:text-rose-500 transition">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Destination Name</label>
+                <input 
+                  type="text" 
+                  value={newDest}
+                  onChange={(e) => setNewDest(e.target.value.toUpperCase())}
+                  placeholder="E.G. NAGA CITY"
+                  className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddDestination()}
+                />
+              </div>
+              <button 
+                onClick={handleAddDestination}
+                className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition active:scale-[0.98] shadow-lg shadow-blue-100"
+              >
+                Save Destination
+              </button>
+              
+              <div className="pt-4 mt-4 border-t border-slate-100">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Recently Added</p>
+                <div className="flex flex-wrap gap-2 max-h-40 overflow-auto custom-scrollbar pr-2">
+                  {destinations.slice(0, 10).map((d, i) => (
+                    <span key={i} className="px-3 py-1 bg-slate-50 text-slate-600 text-[11px] font-bold rounded-lg border border-slate-100">{d.destination}</span>
+                  ))}
+                  {destinations.length === 0 && <p className="text-xs text-slate-400 italic">No destinations registered yet.</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

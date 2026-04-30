@@ -6,6 +6,7 @@ interface PermitFormProps {
   data: CertificateData;
   onChange: (newData: CertificateData) => void;
   onSubmit: () => void;
+  destinations?: any[];
   isEditing?: boolean;
 }
 
@@ -29,7 +30,21 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
   </div>
 );
 
-const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEditing }) => {
+const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, destinations = [], isEditing }) => {
+  const [showDestSuggestions, setShowDestSuggestions] = React.useState(false);
+  const [filteredDestinations, setFilteredDestinations] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    if (data.destination) {
+      const filtered = destinations.filter(d => 
+        d.destination.toLowerCase().includes(data.destination.toLowerCase())
+      );
+      setFilteredDestinations(filtered);
+    } else {
+      setFilteredDestinations(destinations);
+    }
+  }, [data.destination, destinations]);
+
   const updateRemarks = (currentData: CertificateData) => {
     const driverCount = [currentData.driver_name, currentData.driver_name_2, currentData.driver_name_3]
       .filter(name => name && name.trim().length > 0).length;
@@ -132,7 +147,39 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEdi
             )}
           </div>
           <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} />
-          <InputGroup label="Destination" name="destination" value={data.destination} onChange={handleChange} />
+          
+          <div className="relative">
+            <InputGroup 
+              label="Destination" 
+              name="destination" 
+              value={data.destination} 
+              onChange={(e: any) => {
+                handleChange(e);
+                setShowDestSuggestions(true);
+              }}
+              placeholder="SEARCH OR TYPE DESTINATION"
+            />
+            {showDestSuggestions && filteredDestinations.length > 0 && (
+              <div className="absolute z-50 w-full mt-1 bg-white border border-slate-100 rounded-2xl shadow-2xl max-h-48 overflow-auto custom-scrollbar animate-in slide-in-from-top-2">
+                {filteredDestinations.map((d, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      onChange({ ...data, destination: d.destination });
+                      setShowDestSuggestions(false);
+                    }}
+                    className="w-full px-5 py-3 text-left text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition border-b border-slate-50 last:border-0"
+                  >
+                    {d.destination}
+                  </button>
+                ))}
+              </div>
+            )}
+            {showDestSuggestions && (
+              <div className="fixed inset-0 z-40" onClick={() => setShowDestSuggestions(false)}></div>
+            )}
+          </div>
+
           <InputGroup label="No. of Box(es)" name="no_of_boxes" value={data.no_of_boxes} onChange={handleChange} />
           <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
           <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />
