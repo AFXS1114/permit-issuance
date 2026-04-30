@@ -24,6 +24,8 @@ export interface CertificateData {
   specie: string;
 }
 
+// Main Certificate Component
+
 const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
   const formatDateTime = (dateTimeStr: string) => {
     if (!dateTimeStr) return '';

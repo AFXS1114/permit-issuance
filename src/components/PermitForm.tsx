@@ -1,5 +1,5 @@
 import React from 'react';
-import { CertificateData } from './Certificate';
+import { CertificateData } from './Certificate'; // Ensure this matches Certificate.tsx interface
 import { Printer, Save, ChevronRight, Building2, User, Calendar, MapPin, Tag } from 'lucide-react';
 
 interface PermitFormProps {
