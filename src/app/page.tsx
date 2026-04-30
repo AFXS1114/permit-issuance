@@ -15,6 +15,7 @@ export default function Home() {
   const [brokers, setBrokers] = useState<any[]>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [brokerSearchQuery, setBrokerSearchQuery] = useState('');
   const [formData, setFormData] = useState<CertificateData>({
     business_name: '',
     business_location: '',
@@ -205,6 +206,7 @@ export default function Home() {
       ticket_no: '', specie: 'LAWLAW(TAMBAN)'
     });
     setEditingId(null);
+    setBrokerSearchQuery(''); // Reset broker search when starting fresh
   };
 
   const handleEdit = (permit: any) => {
@@ -427,8 +429,23 @@ export default function Home() {
                 <p className="text-slate-500">Choose a registered broker to proceed with the outgoing permit</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {brokers.map((broker) => (
+              {/* Broker Search Box */}
+              <div className="mb-8 relative group">
+                <Search className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition" />
+                <input
+                  type="text"
+                  placeholder="Search by business name or recipient..."
+                  value={brokerSearchQuery}
+                  onChange={(e) => setBrokerSearchQuery(e.target.value.toUpperCase())}
+                  className="w-full pl-14 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-[1.5rem] focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-lg font-medium"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                {brokers.filter(b =>
+                  b.business_name.toLowerCase().includes(brokerSearchQuery.toLowerCase()) ||
+                  b.recipient_name.toLowerCase().includes(brokerSearchQuery.toLowerCase())
+                ).map((broker) => (
                   <button
                     key={broker.id}
                     onClick={() => {
