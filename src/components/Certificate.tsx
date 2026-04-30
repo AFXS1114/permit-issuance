@@ -145,7 +145,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
             </span>
           </div>
           <div className="footer-field">
-            <span className="field-label">Origin :</span>PFDA-BFPC
+            <span className="field-label">Origin :</span>
             <span className="field-value">{data.origin}</span>
           </div>
           <div className="footer-field">
