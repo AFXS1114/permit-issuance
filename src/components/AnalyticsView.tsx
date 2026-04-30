@@ -42,17 +42,17 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ permits, brokers }) => {
       specieMap[specie] = (specieMap[specie] || 0) + 1;
     });
 
-    const monthData = Object.entries(monthMap).map(([name, volume]) => ({ name, volume })).slice(-12);
+    const monthData = Object.entries(monthMap).map(([name, volume]) => ({ name, volume: volume as number })).slice(-12);
     const destData = Object.entries(destMap)
-      .map(([name, count]) => ({ name, count }))
+      .map(([name, count]) => ({ name, count: count as number }))
       .sort((a: any, b: any) => b.count - a.count)
       .slice(0, 8);
     const brokerData = Object.entries(brokerMap)
-      .map(([name, count]) => ({ name, count }))
+      .map(([name, count]) => ({ name, count: count as number }))
       .sort((a: any, b: any) => b.count - a.count)
       .slice(0, 5);
     const specieData = Object.entries(specieMap)
-      .map(([name, value]) => ({ name, value }))
+      .map(([name, value]) => ({ name, value: value as number }))
       .sort((a: any, b: any) => b.value - a.value)
       .slice(0, 6);
 
