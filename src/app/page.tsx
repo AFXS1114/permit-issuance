@@ -79,6 +79,7 @@ export default function Home() {
       if (session) {
         fetchPermits();
         fetchDestinations();
+        fetchBrokers(); // Added this
       }
     });
     return () => {
@@ -396,8 +397,8 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               {[
                 { label: 'Total Permits', value: permits.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
-                { label: 'Recently Issued', value: permits.filter(p => new Date(p.created_at) > new Date(Date.now() - 86400000)).length, icon: Clock, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                { label: 'Active Brokers', value: new Set(permits.map(p => p.broker_id)).size, icon: Filter, color: 'text-amber-600', bg: 'bg-amber-50' },
+                { label: 'Recently Issued Today', value: permits.filter(p => p.issue_date === new Date().toISOString().split('T')[0]).length, icon: Clock, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { label: 'Registered Brokers', value: brokers.length, icon: Users, color: 'text-indigo-600', bg: 'bg-indigo-50' },
               ].map((stat, i) => (
                 <div key={i} className="glass-card p-6 rounded-3xl flex items-center gap-4 border border-white">
                   <div className={`${stat.bg} p-4 rounded-2xl`}>
