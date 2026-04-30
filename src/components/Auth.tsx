@@ -48,15 +48,15 @@ const Auth = ({ onBypass }: { onBypass?: () => void }) => {
       <div className="max-w-md w-full relative group">
         {/* Decorative background glow */}
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-        
+
         <div className="relative glass-card bg-white/80 rounded-[2.5rem] p-10 border border-white/50 shadow-2xl">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-xl shadow-blue-200 mb-6 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500">
               <FileText className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-4xl font-black text-slate-900 tracking-tight">Periss</h1>
+            <h1 className="text-4xl font-black text-slate-900 tracking-tight">BFPC</h1>
             <p className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em] mt-2">
-              Permit Intelligence System
+              Permit Issuance System
             </p>
           </div>
 
@@ -126,7 +126,7 @@ const Auth = ({ onBypass }: { onBypass?: () => void }) => {
             >
               🚀 Quick Bypass (Admin Access)
             </button>
-            
+
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               className="block w-full text-xs font-bold text-slate-400 hover:text-blue-600 transition uppercase tracking-widest"
@@ -137,7 +137,8 @@ const Auth = ({ onBypass }: { onBypass?: () => void }) => {
         </div>
 
         <p className="text-center text-slate-400 text-[10px] mt-8 font-bold uppercase tracking-widest">
-          Authorized PFDA Personnel Only
+          Authorized BFPC Personnel Only <br></br>
+          Programmer: "{"bug"}"
         </p>
       </div>
     </div>

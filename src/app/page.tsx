@@ -11,7 +11,7 @@ import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Cloc
 export default function Home() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'manage-brokers' | 'create' | 'edit'>('list');
+  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'manage-brokers' | 'create' | 'edit' | 'analytics'>('list');
   const [permits, setPermits] = useState<any[]>([]);
   const [brokers, setBrokers] = useState<any[]>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
