@@ -16,6 +16,7 @@ export default function Home() {
   const [brokers, setBrokers] = useState<any[]>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
   const [brokerSearchQuery, setBrokerSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -302,12 +303,20 @@ export default function Home() {
     }
   };
 
-  const filteredPermits = permits.filter(p =>
-    p.rec_brokers_info?.business_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.rec_brokers_info?.recipient_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.ticket_no?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPermits = useMemo(() => {
+    let result = permits.filter(p => {
+      const matchesSearch = 
+        p.rec_brokers_info?.business_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.rec_brokers_info?.recipient_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.ticket_no?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesDate = !dateFilter || p.issue_date === dateFilter;
+      
+      return matchesSearch && matchesDate;
+    });
+    return result;
+  }, [permits, searchQuery, dateFilter]);
 
   const totalPages = Math.ceil(filteredPermits.length / itemsPerPage);
   const paginatedPermits = filteredPermits.slice(
@@ -417,15 +426,34 @@ export default function Home() {
             <div className="glass-card rounded-[2.5rem] overflow-hidden border border-white">
               <div className="p-8 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h2 className="text-xl font-bold text-slate-800">Outgoing Records</h2>
-                <div className="relative group">
-                  <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition" />
-                  <input
-                    type="text"
-                    placeholder="Search by business, ID, or recipient..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-11 pr-4 py-2.5 bg-slate-50 border-none rounded-2xl text-sm w-full md:w-80 focus:ring-2 focus:ring-blue-100 transition"
-                  />
+                <div className="flex flex-col md:flex-row items-center gap-3">
+                  <div className="relative group">
+                    <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition" />
+                    <input
+                      type="text"
+                      placeholder="Search business, ID, or ticket..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-11 pr-4 py-2.5 bg-slate-50 border-none rounded-2xl text-sm w-full md:w-64 focus:ring-2 focus:ring-blue-100 transition"
+                    />
+                  </div>
+                  <div className="relative group">
+                    <Calendar className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition" />
+                    <input
+                      type="date"
+                      value={dateFilter}
+                      onChange={(e) => setDateFilter(e.target.value)}
+                      className="pl-11 pr-4 py-2.5 bg-slate-50 border-none rounded-2xl text-sm w-full md:w-48 focus:ring-2 focus:ring-blue-100 transition"
+                    />
+                    {dateFilter && (
+                      <button 
+                        onClick={() => setDateFilter('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-rose-500 transition"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 

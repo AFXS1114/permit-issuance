@@ -27,7 +27,7 @@ const AnalyticsView: React.FC<AnalyticsViewProps> = ({ permits, brokers }) => {
     permits.forEach(p => {
       // Month Trend
       const date = new Date(p.issue_date);
-      const month = date.toLocaleString('default', { month: 'short', year: '2y' });
+      const month = date.toLocaleString('default', { month: 'short', year: '2-digit' });
       monthMap[month] = (monthMap[month] || 0) + (parseInt(p.no_of_boxes) || 0);
 
       // Top Destinations
