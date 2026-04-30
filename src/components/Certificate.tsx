@@ -121,7 +121,9 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
             <span className="field-value">
               {[data.driver_name, data.driver_name_2, data.driver_name_3]
                 .filter(Boolean)
-                .join(', ')}
+                .map((name, idx) => (
+                  <div key={idx}>{name}</div>
+                ))}
             </span>
           </div>
           <div className="footer-field"><span className="field-label"></span><span className="field-value"></span></div>
