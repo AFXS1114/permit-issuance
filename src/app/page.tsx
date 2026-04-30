@@ -5,7 +5,8 @@ import { supabase } from '@/lib/supabase';
 import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
 import PermitForm from '@/components/PermitForm';
-import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2 } from 'lucide-react';
+import AnalyticsView from '@/components/AnalyticsView';
+import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2, BarChart3 } from 'lucide-react';
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);
@@ -356,7 +357,7 @@ export default function Home() {
           <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-8 mr-4">
               <button onClick={() => setView('list')} className={`text-sm font-semibold transition ${view === 'list' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Dashboard</button>
-              <button className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition">Analytics</button>
+              <button onClick={() => setView('analytics')} className={`text-sm font-semibold transition ${view === 'analytics' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Analytics</button>
               <button className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition">Settings</button>
             </nav>
             <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
@@ -665,6 +666,10 @@ export default function Home() {
               </div>
             </div>
           </div>
+        )}
+
+        {view === 'analytics' && (
+          <AnalyticsView permits={permits} brokers={brokers} />
         )}
 
         {view === 'manage-brokers' && (
