@@ -16,6 +16,8 @@ export default function Home() {
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [brokerSearchQuery, setBrokerSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   const [formData, setFormData] = useState<CertificateData>({
     business_name: '',
     business_location: '',
@@ -287,8 +289,19 @@ export default function Home() {
   const filteredPermits = permits.filter(p =>
     p.rec_brokers_info?.business_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.rec_brokers_info?.recipient_name.toLowerCase().includes(searchQuery.toLowerCase())
+    p.rec_brokers_info?.recipient_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.ticket_no?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filteredPermits.length / itemsPerPage);
+  const paginatedPermits = filteredPermits.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   if (!session && !loading) return <Auth onBypass={() => setSession({ user: { id: '00000000-0000-0000-0000-000000000000', email: 'admin@pfda.com' } })} />;
   if (!session && loading) {
@@ -411,7 +424,7 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {filteredPermits.map((permit) => (
+                    {paginatedPermits.map((permit) => (
                       <tr key={permit.id} className="hover:bg-blue-50/30 transition-colors group">
                         <td className="px-8 py-6">
                           <div className="font-bold text-slate-900">{permit.rec_brokers_info?.permit_id}</div>
@@ -445,6 +458,46 @@ export default function Home() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="bg-slate-50/50 px-8 py-5 flex items-center justify-between border-t border-slate-100">
+                  <div className="text-sm text-slate-500 font-medium">
+                    Showing <span className="text-slate-900 font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="text-slate-900 font-bold">{Math.min(currentPage * itemsPerPage, filteredPermits.length)}</span> of <span className="text-slate-900 font-bold">{filteredPermits.length}</span> records
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    >
+                      Previous
+                    </button>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1)
+                        .filter(pageNum => pageNum === 1 || pageNum === totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1))
+                        .map((pageNum, idx, arr) => (
+                          <React.Fragment key={pageNum}>
+                            {idx > 0 && arr[idx-1] !== pageNum - 1 && <span className="px-1 text-slate-400">...</span>}
+                            <button
+                              onClick={() => setCurrentPage(pageNum)}
+                              className={`w-10 h-10 text-sm font-bold rounded-xl transition ${currentPage === pageNum ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-slate-600 hover:bg-white border border-transparent hover:border-slate-200'}`}
+                            >
+                              {pageNum}
+                            </button>
+                          </React.Fragment>
+                        ))}
+                    </div>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
