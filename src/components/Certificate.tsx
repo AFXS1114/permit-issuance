@@ -20,6 +20,8 @@ export interface CertificateData {
   time_date: string;
   valid_until: string;
   remarks: string;
+  ticket_no: string;
+  specie: string;
 }
 
 const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
@@ -151,6 +153,14 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
           <div className="footer-field">
             <span className="field-label">No. of Box(es):</span>
             <span className="field-value">{data.no_of_boxes}</span>
+          </div>
+          <div className="footer-field">
+            <span className="field-label">Ticket No. :</span>
+            <span className="field-value">{data.ticket_no}</span>
+          </div>
+          <div className="footer-field">
+            <span className="field-label">Species :</span>
+            <span className="field-value">{data.specie}</span>
           </div>
           <div className="footer-field" >
             <span className="field-label" >Time/Date :</span>

@@ -33,7 +33,9 @@ export default function Home() {
     no_of_boxes: '',
     time_date: '',
     valid_until: '',
-    remarks: ''
+    remarks: '',
+    ticket_no: '',
+    specie: 'LAWLAW(TAMBAN)'
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [brokerFormData, setBrokerFormData] = useState({
@@ -159,6 +161,8 @@ export default function Home() {
         time_date: formData.time_date,
         valid_until: formData.valid_until,
         remarks: formData.remarks,
+        ticket_no: formData.ticket_no,
+        specie: formData.specie,
         ...(session.user.id !== '00000000-0000-0000-0000-000000000000' && { user_id: session.user.id })
       };
 
@@ -194,7 +198,8 @@ export default function Home() {
       business_name: '', business_location: '', recipient_name: '', role: '',
       validity_start: '', validity_end: '', issue_date: new Date().toISOString().split('T')[0],
       permit_id: '', plate_no: '', driver_name: '', origin: '', destination: '',
-      no_of_boxes: '', time_date: '', valid_until: '', remarks: ''
+      no_of_boxes: '', time_date: '', valid_until: '', remarks: '',
+      ticket_no: '', specie: 'LAWLAW(TAMBAN)'
     });
     setEditingId(null);
   };

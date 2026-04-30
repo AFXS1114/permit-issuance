@@ -181,6 +181,8 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
           </div>
 
           <InputGroup label="No. of Box(es)" name="no_of_boxes" value={data.no_of_boxes} onChange={handleChange} />
+          <InputGroup label="Ticket No." name="ticket_no" value={data.ticket_no} onChange={handleChange} placeholder="T-0000" />
+          <InputGroup label="Species" name="specie" value={data.specie} onChange={handleChange} />
           <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
           <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />
           <InputGroup label="Remarks" name="remarks" value={data.remarks} onChange={handleChange} />
