@@ -31,8 +31,8 @@ export default function Home() {
     origin: 'PFDA-BFPC',
     destination: '',
     no_of_boxes: '',
-    time_date: '',
-    valid_until: '',
+    time_date: new Date().toISOString().slice(0, 16),
+    valid_until: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
     remarks: '',
     ticket_no: '',
     specie: 'LAWLAW(TAMBAN)'
@@ -197,8 +197,11 @@ export default function Home() {
     setFormData({
       business_name: '', business_location: '', recipient_name: '', role: '',
       validity_start: '', validity_end: '', issue_date: new Date().toISOString().split('T')[0],
-      permit_id: '', plate_no: '', driver_name: '', origin: '', destination: '',
-      no_of_boxes: '', time_date: '', valid_until: '', remarks: '',
+      permit_id: '', plate_no: '', driver_name: '', origin: 'PFDA-BFPC', destination: '',
+      no_of_boxes: '', 
+      time_date: new Date().toISOString().slice(0, 16), 
+      valid_until: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16), 
+      remarks: '',
       ticket_no: '', specie: 'LAWLAW(TAMBAN)'
     });
     setEditingId(null);
