@@ -20,7 +20,7 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
       <input
         type={type}
         name={name}
-        value={value}
+        value={value ?? ''}
         onChange={onChange}
         readOnly={readOnly}
         placeholder={placeholder}
