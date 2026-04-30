@@ -31,13 +31,19 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
 
 const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEditing }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    let newData = { ...data, [name]: value };
+    const { name, value, type } = e.target as HTMLInputElement;
+    let processedValue = value;
 
-    if (name === 'time_date' && value) {
-      const date = new Date(value);
+    // Auto-uppercase for text and search inputs
+    if (type === 'text' || !type) {
+      processedValue = value.toUpperCase();
+    }
+
+    let newData = { ...data, [name]: processedValue };
+
+    if (name === 'time_date' && processedValue) {
+      const date = new Date(processedValue);
       date.setDate(date.getDate() + 2);
-      // Format back to YYYY-MM-DDTHH:mm for datetime-local
       const validUntil = date.toISOString().slice(0, 16);
       newData.valid_until = validUntil;
     }

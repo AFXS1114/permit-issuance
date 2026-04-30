@@ -418,7 +418,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       value={brokerFormData.business_name}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, business_name: e.target.value})}
+                      onChange={(e) => setBrokerFormData({...brokerFormData, business_name: e.target.value.toUpperCase()})}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
@@ -427,7 +427,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       value={brokerFormData.business_location}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, business_location: e.target.value})}
+                      onChange={(e) => setBrokerFormData({...brokerFormData, business_location: e.target.value.toUpperCase()})}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
@@ -436,7 +436,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       value={brokerFormData.recipient_name}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, recipient_name: e.target.value})}
+                      onChange={(e) => setBrokerFormData({...brokerFormData, recipient_name: e.target.value.toUpperCase()})}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
@@ -445,7 +445,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       value={brokerFormData.role}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, role: e.target.value})}
+                      onChange={(e) => setBrokerFormData({...brokerFormData, role: e.target.value.toUpperCase()})}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
@@ -454,7 +454,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       value={brokerFormData.permit_id}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, permit_id: e.target.value})}
+                      onChange={(e) => setBrokerFormData({...brokerFormData, permit_id: e.target.value.toUpperCase()})}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-blue-600 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
