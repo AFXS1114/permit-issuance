@@ -615,6 +615,18 @@ export default function Home() {
               </button>
             </div>
 
+            {/* Manage Brokers Search */}
+            <div className="mb-8 relative group max-w-2xl">
+              <Search className="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition" />
+              <input
+                type="text"
+                placeholder="Filter brokers by name, business, or permit ID..."
+                value={brokerSearchQuery}
+                onChange={(e) => setBrokerSearchQuery(e.target.value.toUpperCase())}
+                className="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm font-semibold shadow-sm"
+              />
+            </div>
+
             <div className="glass-card rounded-[2.5rem] overflow-hidden border border-white">
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
@@ -628,7 +640,11 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {brokers.map((broker) => (
+                    {brokers.filter(b => 
+                      b.business_name.toLowerCase().includes(brokerSearchQuery.toLowerCase()) ||
+                      b.recipient_name.toLowerCase().includes(brokerSearchQuery.toLowerCase()) ||
+                      b.permit_id.toLowerCase().includes(brokerSearchQuery.toLowerCase())
+                    ).map((broker) => (
                       <tr key={broker.id} className="group hover:bg-slate-50/50 transition-colors">
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-4">
