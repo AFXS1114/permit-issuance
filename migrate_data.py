@@ -16,7 +16,7 @@ SQL_FILE = 'old_tbl_outgoing_rec.sql'
 BATCH_SIZE = 500
 
 def get_broker_mapping():
-    print("🔄 Fetching broker mapping from Supabase...")
+    print("--- Fetching broker mapping from Supabase...")
     brokers = supabase.table('rec_brokers_info').select('id, recipient_name, business_name').execute()
     mapping = {}
     for b in brokers.data:
@@ -75,7 +75,7 @@ def migrate():
     total_migrated = 0
     skipped_brokers = set()
 
-    print(f"🚀 Starting migration from {SQL_FILE}...")
+    print(f"--- Starting migration from {SQL_FILE}...")
 
     with open(SQL_FILE, 'r', encoding='latin1') as f:
         for line in f:
@@ -121,13 +121,13 @@ def migrate():
 
             # Batch Insert
             if len(records_to_insert) >= BATCH_SIZE:
-                print(f"📦 Uploading batch... (Total Migrated: {total_migrated})")
+                print(f"--- Uploading batch... (Total Migrated: {total_migrated})")
                 try:
                     supabase.table('rec_outgoing').insert(records_to_insert).execute()
                     total_migrated += len(records_to_insert)
                     records_to_insert = []
                 except Exception as e:
-                    print(f"❌ Batch error: {e}")
+                    print(f"!!! Batch error: {e}")
                     records_to_insert = []
 
         # Final batch
@@ -135,12 +135,12 @@ def migrate():
             supabase.table('rec_outgoing').insert(records_to_insert).execute()
             total_migrated += len(records_to_insert)
 
-    print("\n✅ MIGRATION COMPLETE!")
-    print(f"📊 Total Records in SQL: {total_processed}")
-    print(f"🎉 Total Records Migrated: {total_migrated}")
+    print("\nDONE: MIGRATION COMPLETE!")
+    print(f"--- Total Records in SQL: {total_processed}")
+    print(f"--- Total Records Migrated: {total_migrated}")
     
     if skipped_brokers:
-        print(f"⚠️ Skipped {len(skipped_brokers)} brokers (Names didn't match current records):")
+        print(f"!!! Skipped {len(skipped_brokers)} brokers (Names didn't match current records):")
         print(list(skipped_brokers)[:10], "...")
 
 if __name__ == "__main__":

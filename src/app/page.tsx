@@ -715,12 +715,20 @@ export default function Home() {
                           {broker.validity_start} - {broker.validity_end}
                         </td>
                         <td className="px-8 py-6 text-right">
-                          <button 
-                            onClick={() => handleEditBroker(broker)}
-                            className="p-2.5 bg-white text-slate-400 hover:text-indigo-600 hover:shadow-md rounded-xl transition"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
+                          <div className="flex justify-end gap-2">
+                            <button 
+                              onClick={() => handleEditBroker(broker)}
+                              className="p-2.5 bg-white text-slate-400 hover:text-indigo-600 hover:shadow-md rounded-xl transition"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={() => { if (confirm(`Delete broker "${broker.business_name}"?`)) supabase.from('rec_brokers_info').delete().eq('id', broker.id).then(fetchBrokers) }}
+                              className="p-2.5 bg-white text-slate-400 hover:text-rose-600 hover:shadow-md rounded-xl transition"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
