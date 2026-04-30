@@ -6,7 +6,7 @@ import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
 import PermitForm from '@/components/PermitForm';
 import AnalyticsView from '@/components/AnalyticsView';
-import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2, BarChart3 } from 'lucide-react';
+import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2, BarChart3, Calendar } from 'lucide-react';
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);
