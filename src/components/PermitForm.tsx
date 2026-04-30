@@ -36,7 +36,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
 
   React.useEffect(() => {
     if (data.destination) {
-      const filtered = destinations.filter(d => 
+      const filtered = destinations.filter(d =>
         d.destination.toLowerCase().includes(data.destination.toLowerCase())
       );
       setFilteredDestinations(filtered);
@@ -48,11 +48,11 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
   const updateRemarks = (currentData: CertificateData) => {
     const driverCount = [currentData.driver_name, currentData.driver_name_2, currentData.driver_name_3]
       .filter(name => name && name.trim().length > 0).length;
-    
+
     let newRemarks = currentData.remarks;
     if (driverCount === 1) newRemarks = "SOLO DRIVER ONLY";
     else if (driverCount > 1) newRemarks = `${driverCount} PERSONS ARE IN THIS TRIP`;
-    
+
     return { ...currentData, remarks: newRemarks.toUpperCase() };
   };
 
@@ -90,7 +90,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
           <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs">1</div>
           <h3 className="text-lg font-bold text-slate-800">Registration Details (Selected Broker)</h3>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="col-span-2">
             <InputGroup label="Permit ID (PTCB No.)" name="permit_id" value={data.permit_id} onChange={handleChange} readOnly icon={Tag} />
@@ -115,7 +115,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
             <InputGroup label="Issue Date" name="issue_date" type="date" value={data.issue_date} onChange={handleChange} icon={Calendar} />
           </div>
           <InputGroup label="Plate No." name="plate_no" value={data.plate_no} onChange={handleChange} placeholder="ABC-1234" />
-          
+
           <div className="space-y-3">
             <InputGroup label="Driver 1 Name" name="driver_name" value={data.driver_name} onChange={handleChange} />
             {data.driver_name_2 !== undefined && (
@@ -128,9 +128,9 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
                 <InputGroup label="Driver 3 Name" name="driver_name_3" value={data.driver_name_3} onChange={handleChange} />
               </div>
             )}
-            
+
             {(!data.hasOwnProperty('driver_name_3') || data.driver_name_3 === undefined) && (
-              <button 
+              <button
                 type="button"
                 onClick={() => {
                   if (data.driver_name_2 === undefined) {
@@ -147,12 +147,12 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
             )}
           </div>
           <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} readOnly />
-          
+
           <div className="relative">
-            <InputGroup 
-              label="Destination" 
-              name="destination" 
-              value={data.destination} 
+            <InputGroup
+              label="Destination"
+              name="destination"
+              value={data.destination}
               onChange={(e: any) => {
                 handleChange(e);
                 setShowDestSuggestions(true);
@@ -181,7 +181,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
           </div>
 
           <InputGroup label="No. of Box(es)" name="no_of_boxes" value={data.no_of_boxes} onChange={handleChange} />
-          <InputGroup label="Ticket No." name="ticket_no" value={data.ticket_no} onChange={handleChange} placeholder="T-0000" />
+          <InputGroup label="Ticket No." name="ticket_no" value={data.ticket_no} onChange={handleChange} placeholder="BS-0000" />
           <InputGroup label="Species" name="specie" value={data.specie} onChange={handleChange} />
           <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
           <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />

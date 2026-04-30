@@ -50,7 +50,7 @@ export default function Home() {
   const [destinations, setDestinations] = useState<any[]>([]);
   const [showDestModal, setShowDestModal] = useState(false);
   const [newDest, setNewDest] = useState('');
-  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -121,14 +121,14 @@ export default function Home() {
 
   const handleAddDestination = async () => {
     if (!newDest.trim()) return;
-    
+
     try {
       const { error } = await supabase
         .from('rec_destinations')
         .insert([{ destination: newDest.toUpperCase() }]);
 
       if (error) throw error;
-      
+
       showToast('Destination added successfully');
       setNewDest('');
       setShowDestModal(false);
@@ -149,7 +149,7 @@ export default function Home() {
     if (!session || !selectedBroker) return;
     try {
       setLoading(true);
-      
+
       const outgoingData = {
         broker_id: selectedBroker.id,
         issue_date: formData.issue_date,
@@ -177,10 +177,10 @@ export default function Home() {
       }
 
       await fetchPermits();
-      
+
       // Automatic print after save
       showToast(view === 'edit' ? 'Permit updated successfully' : 'New outgoing record created');
-      
+
       setTimeout(() => {
         window.print();
         setView('list');
@@ -198,9 +198,9 @@ export default function Home() {
       business_name: '', business_location: '', recipient_name: '', role: '',
       validity_start: '', validity_end: '', issue_date: new Date().toISOString().split('T')[0],
       permit_id: '', plate_no: '', driver_name: '', origin: 'PFDA-BFPC', destination: '',
-      no_of_boxes: '', 
-      time_date: new Date().toISOString().slice(0, 16), 
-      valid_until: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16), 
+      no_of_boxes: '',
+      time_date: new Date().toISOString().slice(0, 16),
+      valid_until: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
       remarks: '',
       ticket_no: '', specie: 'LAWLAW(TAMBAN)'
     });
@@ -243,9 +243,9 @@ export default function Home() {
           ...brokerFormData,
           ...(session.user.id !== '00000000-0000-0000-0000-000000000000' && { user_id: session.user.id })
         });
-      
+
       if (error) throw error;
-      
+
       showToast('Broker registered successfully');
       await fetchBrokers();
       setView('select-broker');
@@ -260,7 +260,7 @@ export default function Home() {
     }
   };
 
-  const filteredPermits = permits.filter(p => 
+  const filteredPermits = permits.filter(p =>
     p.rec_brokers_info?.business_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.rec_brokers_info?.recipient_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -296,11 +296,11 @@ export default function Home() {
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Periss</h1>
-              <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">PFDA-BFPC Official</p>
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Permit Issuance System</h1>
+              <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">PFDA-BFPC</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-8 mr-4">
               <button onClick={() => setView('list')} className={`text-sm font-semibold transition ${view === 'list' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Dashboard</button>
@@ -308,20 +308,20 @@ export default function Home() {
               <button className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition">Settings</button>
             </nav>
             <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
-            <button 
+            <button
               onClick={() => { setView('select-broker'); resetForm(); fetchBrokers(); fetchDestinations(); }}
               className="bg-slate-900 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 hover:bg-slate-800 transition shadow-lg shadow-slate-200 active:scale-95"
             >
               <Plus className="w-4 h-4" /> <span className="font-semibold text-sm">New Outgoing</span>
             </button>
-            <button 
+            <button
               onClick={() => setShowDestModal(true)}
               className="bg-blue-50 text-blue-600 p-2.5 rounded-xl hover:bg-blue-100 transition active:scale-95 border border-blue-100"
               title="Manage Destinations"
             >
               <MapPin className="w-4 h-4" />
             </button>
-            <button 
+            <button
               onClick={() => supabase.auth.signOut()}
               className="text-slate-400 hover:text-rose-600 transition p-2"
             >
@@ -356,11 +356,11 @@ export default function Home() {
             {/* Main Content Area */}
             <div className="glass-card rounded-[2.5rem] overflow-hidden border border-white">
               <div className="p-8 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h2 className="text-xl font-bold text-slate-800">Outgoing Permits Inventory</h2>
+                <h2 className="text-xl font-bold text-slate-800">Outgoing Records</h2>
                 <div className="relative group">
                   <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition" />
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="Search by business, ID, or recipient..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -368,7 +368,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50/50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
@@ -395,14 +395,14 @@ export default function Home() {
                         </td>
                         <td className="px-8 py-6 text-right">
                           <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button 
-                              onClick={() => handleEdit(permit)} 
+                            <button
+                              onClick={() => handleEdit(permit)}
                               className="p-2.5 bg-white text-slate-400 hover:text-blue-600 hover:shadow-md rounded-xl transition"
                             >
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button 
-                              onClick={() => { if(confirm('Delete permit?')) supabase.from('rec_outgoing').delete().eq('id', permit.id).then(fetchPermits) }} 
+                            <button
+                              onClick={() => { if (confirm('Delete permit?')) supabase.from('rec_outgoing').delete().eq('id', permit.id).then(fetchPermits) }}
                               className="p-2.5 bg-white text-slate-400 hover:text-rose-600 hover:shadow-md rounded-xl transition"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -429,7 +429,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {brokers.map((broker) => (
-                  <button 
+                  <button
                     key={broker.id}
                     onClick={() => {
                       setSelectedBroker(broker);
@@ -452,8 +452,8 @@ export default function Home() {
                     <div className="text-[10px] uppercase tracking-widest font-bold px-2 py-1 bg-white/20 rounded-lg inline-block">{broker.permit_id}</div>
                   </button>
                 ))}
-                
-                <button 
+
+                <button
                   onClick={() => setView('add-broker')}
                   className="p-6 border-2 border-dashed border-slate-200 hover:border-blue-400 hover:bg-blue-50 text-slate-400 hover:text-blue-600 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-2"
                 >
@@ -474,69 +474,69 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="col-span-2">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Business Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={brokerFormData.business_name}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, business_name: e.target.value.toUpperCase()})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, business_name: e.target.value.toUpperCase() })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div className="col-span-2">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Location</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={brokerFormData.business_location}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, business_location: e.target.value.toUpperCase()})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, business_location: e.target.value.toUpperCase() })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Recipient Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={brokerFormData.recipient_name}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, recipient_name: e.target.value.toUpperCase()})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, recipient_name: e.target.value.toUpperCase() })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Role / Designation</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={brokerFormData.role}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, role: e.target.value.toUpperCase()})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, role: e.target.value.toUpperCase() })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div className="col-span-2">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Permit ID (PTCB No.)</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={brokerFormData.permit_id}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, permit_id: e.target.value.toUpperCase()})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, permit_id: e.target.value.toUpperCase() })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-blue-600 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Validity Start</label>
-                    <input 
-                      type="date" 
+                    <input
+                      type="date"
                       value={brokerFormData.validity_start}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, validity_start: e.target.value})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, validity_start: e.target.value })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Validity End</label>
-                    <input 
-                      type="date" 
+                    <input
+                      type="date"
                       value={brokerFormData.validity_end}
-                      onChange={(e) => setBrokerFormData({...brokerFormData, validity_end: e.target.value})}
+                      onChange={(e) => setBrokerFormData({ ...brokerFormData, validity_end: e.target.value })}
                       className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                     />
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={handleSaveBroker}
                   className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition active:scale-[0.98] shadow-xl shadow-slate-100 mt-4"
                 >
@@ -550,29 +550,29 @@ export default function Home() {
         {(view === 'create' || view === 'edit') && (
           <div className="flex flex-col lg:flex-row gap-10 items-start animate-in">
             <div className="w-full lg:w-[45%] no-print">
-              <button 
+              <button
                 onClick={() => setView('list')}
                 className="mb-6 text-slate-400 hover:text-blue-600 flex items-center gap-2 font-semibold text-sm transition"
               >
                 &larr; Return to Intelligence Dashboard
               </button>
               <div className="glass-card p-8 rounded-[2.5rem] border border-white">
-                <PermitForm 
-                  data={formData} 
-                  onChange={setFormData} 
-                  onSubmit={handleSave} 
+                <PermitForm
+                  data={formData}
+                  onChange={setFormData}
+                  onSubmit={handleSave}
                   destinations={destinations}
                   isEditing={view === 'edit'}
                 />
               </div>
             </div>
-            
+
             <div className="w-full lg:w-[55%] sticky top-24">
               <div className="bg-slate-900 p-12 rounded-[3rem] shadow-2xl relative overflow-hidden group">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl transition group-hover:bg-blue-500/20"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full -ml-32 -mb-32 blur-3xl transition group-hover:bg-indigo-500/20"></div>
-                
+
                 <div className="relative z-10 flex flex-col items-center">
                   <div className="bg-white p-1 rounded shadow-2xl transform transition hover:scale-[1.01] origin-top">
                     <div className="overflow-auto max-h-[calc(100vh-280px)] custom-scrollbar">
@@ -602,12 +602,12 @@ export default function Home() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Destination Name</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={newDest}
                   onChange={(e) => setNewDest(e.target.value.toUpperCase())}
                   placeholder="E.G. NAGA CITY"
@@ -615,13 +615,13 @@ export default function Home() {
                   onKeyDown={(e) => e.key === 'Enter' && handleAddDestination()}
                 />
               </div>
-              <button 
+              <button
                 onClick={handleAddDestination}
                 className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition active:scale-[0.98] shadow-lg shadow-blue-100"
               >
                 Save Destination
               </button>
-              
+
               <div className="pt-4 mt-4 border-t border-slate-100">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Recently Added</p>
                 <div className="flex flex-wrap gap-2 max-h-40 overflow-auto custom-scrollbar pr-2">
