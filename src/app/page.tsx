@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
