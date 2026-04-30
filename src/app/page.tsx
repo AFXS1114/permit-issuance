@@ -5,12 +5,12 @@ import { supabase } from '@/lib/supabase';
 import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
 import PermitForm from '@/components/PermitForm';
-import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X } from 'lucide-react';
+import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2 } from 'lucide-react';
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'create' | 'edit'>('list');
+  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'manage-brokers' | 'create' | 'edit'>('list');
   const [permits, setPermits] = useState<any[]>([]);
   const [brokers, setBrokers] = useState<any[]>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
@@ -235,26 +235,48 @@ export default function Home() {
     setView('edit');
   };
 
+  const handleEditBroker = (broker: any) => {
+    setBrokerFormData({
+      business_name: broker.business_name,
+      business_location: broker.business_location,
+      recipient_name: broker.recipient_name,
+      role: broker.role,
+      validity_start: broker.validity_start,
+      validity_end: broker.validity_end,
+      permit_id: broker.permit_id
+    });
+    setEditingId(broker.id);
+    setView('add-broker');
+  };
+
   const handleSaveBroker = async () => {
     if (!session) return;
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from('rec_brokers_info')
-        .insert({
-          ...brokerFormData,
-          ...(session.user.id !== '00000000-0000-0000-0000-000000000000' && { user_id: session.user.id })
-        });
+      const isUpdating = !!editingId && view === 'add-broker';
+      
+      const { error } = isUpdating 
+        ? await supabase
+            .from('rec_brokers_info')
+            .update(brokerFormData)
+            .eq('id', editingId)
+        : await supabase
+            .from('rec_brokers_info')
+            .insert({
+              ...brokerFormData,
+              ...(session.user.id !== '00000000-0000-0000-0000-000000000000' && { user_id: session.user.id })
+            });
 
       if (error) throw error;
 
-      showToast('Broker registered successfully');
+      showToast(isUpdating ? 'Broker updated successfully' : 'Broker registered successfully');
       await fetchBrokers();
-      setView('select-broker');
+      setView('manage-brokers');
       setBrokerFormData({
         business_name: '', business_location: '', recipient_name: '',
         role: '', validity_start: '', validity_end: '', permit_id: ''
       });
+      setEditingId(null);
     } catch (error: any) {
       showToast(error.message, 'error');
     } finally {
@@ -322,6 +344,13 @@ export default function Home() {
               title="Manage Destinations"
             >
               <MapPin className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => { setView('manage-brokers'); fetchBrokers(); }}
+              className="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl hover:bg-indigo-100 transition active:scale-95 border border-indigo-100"
+              title="Manage Brokers"
+            >
+              <Users className="w-4 h-4" />
             </button>
             <button
               onClick={() => supabase.auth.signOut()}
@@ -484,9 +513,15 @@ export default function Home() {
 
         {view === 'add-broker' && (
           <div className="animate-in max-w-2xl mx-auto">
-            <button onClick={() => setView('select-broker')} className="mb-6 text-slate-400 hover:text-blue-600 flex items-center gap-2 font-semibold text-sm transition">&larr; Back to Selection</button>
+            <button 
+              onClick={() => setView(editingId ? 'manage-brokers' : 'select-broker')} 
+              className="mb-6 text-slate-400 hover:text-blue-600 flex items-center gap-2 font-semibold text-sm transition"
+            >
+              &larr; Back to {editingId ? 'Management' : 'Selection'}
+            </button>
             <div className="glass-card p-10 rounded-[2.5rem] border border-white">
-              <h2 className="text-2xl font-bold text-slate-800 mb-8">Register New Broker</h2>
+              <h2 className="text-2xl font-bold text-slate-800 mb-2">{editingId ? 'Edit Broker Information' : 'Register New Broker'}</h2>
+              <p className="text-slate-500 mb-8 text-sm">{editingId ? 'Update the details for this registered broker' : 'Enter the broker details to add them to the system'}</p>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="col-span-2">
@@ -557,8 +592,71 @@ export default function Home() {
                   onClick={handleSaveBroker}
                   className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition active:scale-[0.98] shadow-xl shadow-slate-100 mt-4"
                 >
-                  Register Broker
+                  {editingId ? 'Update Broker Information' : 'Register Broker'}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {view === 'manage-brokers' && (
+          <div className="animate-in max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <button onClick={() => setView('list')} className="mb-2 text-slate-400 hover:text-blue-600 flex items-center gap-2 font-semibold text-sm transition">&larr; Back to Dashboard</button>
+                <h2 className="text-3xl font-bold text-slate-800">Manage Brokers</h2>
+                <p className="text-slate-500">View and update registered broker information</p>
+              </div>
+              <button 
+                onClick={() => { setEditingId(null); setBrokerFormData({ business_name: '', business_location: '', recipient_name: '', role: '', validity_start: '', validity_end: '', permit_id: '' }); setView('add-broker'); }}
+                className="bg-slate-900 text-white px-6 py-3 rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition shadow-xl"
+              >
+                <Plus className="w-5 h-5" /> Register New Broker
+              </button>
+            </div>
+
+            <div className="glass-card rounded-[2.5rem] overflow-hidden border border-white">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-50/50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+                    <tr>
+                      <th className="px-8 py-5">Broker / Business</th>
+                      <th className="px-8 py-5">Permit ID</th>
+                      <th className="px-8 py-5">Recipient</th>
+                      <th className="px-8 py-5">Validity</th>
+                      <th className="px-8 py-5 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {brokers.map((broker) => (
+                      <tr key={broker.id} className="group hover:bg-slate-50/50 transition-colors">
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+                              <Building2 className="w-5 h-5 text-indigo-600" />
+                            </div>
+                            <div className="font-bold text-slate-800 uppercase text-sm">{broker.business_name}</div>
+                          </div>
+                        </td>
+                        <td className="px-8 py-6">
+                          <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">{broker.permit_id}</span>
+                        </td>
+                        <td className="px-8 py-6 text-sm text-slate-500 uppercase">{broker.recipient_name}</td>
+                        <td className="px-8 py-6 text-sm text-slate-500">
+                          {broker.validity_start} - {broker.validity_end}
+                        </td>
+                        <td className="px-8 py-6 text-right">
+                          <button 
+                            onClick={() => handleEditBroker(broker)}
+                            className="p-2.5 bg-white text-slate-400 hover:text-indigo-600 hover:shadow-md rounded-xl transition"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
