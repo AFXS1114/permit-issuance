@@ -28,7 +28,7 @@ export default function Home() {
     driver_name: '',
     driver_name_2: '',
     driver_name_3: '',
-    origin: '',
+    origin: 'PFDA-BFPC',
     destination: '',
     no_of_boxes: '',
     time_date: '',

@@ -146,7 +146,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
               </button>
             )}
           </div>
-          <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} />
+          <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} readOnly />
           
           <div className="relative">
             <InputGroup 
