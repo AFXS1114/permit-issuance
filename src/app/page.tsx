@@ -225,7 +225,9 @@ export default function Home() {
       no_of_boxes: permit.no_of_boxes,
       time_date: permit.time_date,
       valid_until: permit.valid_until,
-      remarks: permit.remarks
+      remarks: permit.remarks,
+      ticket_no: permit.ticket_no || '',
+      specie: permit.specie || 'LAWLAW(TAMBAN)'
     });
     setEditingId(permit.id);
     setView('edit');
