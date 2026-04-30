@@ -92,6 +92,20 @@ export default function Home() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  useEffect(() => {
+    if (brokerFormData.validity_start) {
+      const startDate = new Date(brokerFormData.validity_start);
+      if (!isNaN(startDate.getTime())) {
+        const endDate = new Date(startDate);
+        endDate.setFullYear(startDate.getFullYear() + 1);
+        setBrokerFormData(prev => ({
+          ...prev,
+          validity_end: endDate.toISOString().split('T')[0]
+        }));
+      }
+    }
+  }, [brokerFormData.validity_start]);
+
   const fetchPermits = async () => {
     const { data, error } = await supabase
       .from('rec_outgoing')
@@ -636,8 +650,8 @@ export default function Home() {
                     <input
                       type="date"
                       value={brokerFormData.validity_end}
-                      onChange={(e) => setBrokerFormData({ ...brokerFormData, validity_end: e.target.value })}
-                      className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
+                      readOnly
+                      className="w-full px-5 py-3 bg-slate-100 border border-slate-100 rounded-2xl text-sm text-slate-500 cursor-not-allowed outline-none transition-all"
                     />
                   </div>
                 </div>
