@@ -23,6 +23,23 @@ export interface CertificateData {
 }
 
 const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
+  const formatDateTime = (dateTimeStr: string) => {
+    if (!dateTimeStr) return '';
+    try {
+      const date = new Date(dateTimeStr);
+      return date.toLocaleString('en-PH', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+    } catch (e) {
+      return dateTimeStr;
+    }
+  };
+
   return (
     <div className="certificate-container">
       <div className="header">
@@ -123,11 +140,11 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
           </div>
           <div className="footer-field" >
             <span className="field-label" >Time/Date :</span>
-            <span className="field-value">{data.time_date}</span>
+            <span className="field-value">{formatDateTime(data.time_date)}</span>
           </div>
           <div className="footer-field">
             <span className="field-label">Valid Until :</span>
-            <span className="field-value">{data.valid_until}</span>
+            <span className="field-value">{formatDateTime(data.valid_until)}</span>
           </div>
           <div className="footer-field">
             <span className="field-label">Remrks :</span>
