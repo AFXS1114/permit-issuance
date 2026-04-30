@@ -187,18 +187,17 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
         </div>
       </div>
 
-      <div className="pt-6 flex flex-col sm:flex-row gap-4">
-        <button
-          onClick={() => window.print()}
-          className="flex-1 bg-white border border-slate-200 text-slate-700 font-bold py-4 px-6 rounded-2xl transition hover:bg-slate-50 hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.98]"
-        >
-          <Printer className="w-5 h-5" /> Print Certificate
-        </button>
+      <div className="pt-6">
         <button
           onClick={onSubmit}
-          className="flex-1 bg-slate-900 text-white font-bold py-4 px-6 rounded-2xl transition hover:bg-slate-800 hover:shadow-xl shadow-slate-200 flex items-center justify-center gap-2 active:scale-[0.98]"
+          className="w-full bg-slate-900 text-white font-bold py-5 px-6 rounded-2xl transition hover:bg-slate-800 hover:shadow-2xl shadow-slate-200 flex items-center justify-center gap-3 active:scale-[0.98] group"
         >
-          <Save className="w-5 h-5" /> {isEditing ? 'Update Record' : 'Finalize & Issue'}
+          <div className="flex items-center gap-2">
+            <Save className="w-5 h-5 group-hover:scale-110 transition" />
+            <span className="text-slate-500 font-normal">|</span>
+            <Printer className="w-5 h-5 group-hover:scale-110 transition" />
+          </div>
+          <span className="text-lg tracking-wide uppercase">PRINT / SAVE RECORD</span>
         </button>
       </div>
     </div>

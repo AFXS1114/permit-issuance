@@ -173,8 +173,15 @@ export default function Home() {
       }
 
       await fetchPermits();
-      setView('list');
-      resetForm();
+      
+      // Automatic print after save
+      showToast(view === 'edit' ? 'Permit updated successfully' : 'New outgoing record created');
+      
+      setTimeout(() => {
+        window.print();
+        setView('list');
+        resetForm();
+      }, 800);
     } catch (error: any) {
       showToast(error.message, 'error');
     } finally {
