@@ -135,8 +135,6 @@ export default function Home() {
       showToast(error.message, 'error');
     }
   };
-    else setBrokers(data || []);
-  };
 
   useEffect(() => {
     if (session) {
