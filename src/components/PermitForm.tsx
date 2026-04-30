@@ -30,6 +30,17 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
 );
 
 const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEditing }) => {
+  const updateRemarks = (currentData: CertificateData) => {
+    const driverCount = [currentData.driver_name, currentData.driver_name_2, currentData.driver_name_3]
+      .filter(name => name && name.trim().length > 0).length;
+    
+    let newRemarks = currentData.remarks;
+    if (driverCount === 1) newRemarks = "SOLO DRIVER ONLY";
+    else if (driverCount > 1) newRemarks = `${driverCount} PERSONS ARE IN THIS TRIP`;
+    
+    return { ...currentData, remarks: newRemarks.toUpperCase() };
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
     let processedValue = value;
@@ -41,11 +52,17 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, isEdi
 
     let newData = { ...data, [name]: processedValue };
 
+    // Auto-calculate Valid Until
     if (name === 'time_date' && processedValue) {
       const date = new Date(processedValue);
       date.setDate(date.getDate() + 2);
       const validUntil = date.toISOString().slice(0, 16);
       newData.valid_until = validUntil;
+    }
+
+    // Auto-update Remarks if a driver name changed
+    if (name.includes('driver_name')) {
+      newData = updateRemarks(newData);
     }
 
     onChange(newData);
