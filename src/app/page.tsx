@@ -21,6 +21,13 @@ export default function Home() {
   const [brokerSearchQuery, setBrokerSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  // Helper to get local ISO string for datetime-local inputs
+  const getLocalTime = (date = new Date()) => {
+    const tzOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - tzOffset).toISOString();
+  };
+
   const [formData, setFormData] = useState<CertificateData>({
     business_name: '',
     business_location: '',
@@ -28,7 +35,7 @@ export default function Home() {
     role: '',
     validity_start: '',
     validity_end: '',
-    issue_date: new Date().toISOString().split('T')[0],
+    issue_date: getLocalTime().split('T')[0],
     permit_id: '',
     plate_no: '',
     driver_name: '',
@@ -37,8 +44,8 @@ export default function Home() {
     origin: 'PFDA-BFPC',
     destination: '',
     no_of_boxes: '',
-    time_date: new Date().toISOString().slice(0, 16),
-    valid_until: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
+    time_date: getLocalTime().slice(0, 16),
+    valid_until: getLocalTime(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)).slice(0, 16),
     remarks: '',
     ticket_no: '',
     specie: 'LAWLAW(TAMBAN)'

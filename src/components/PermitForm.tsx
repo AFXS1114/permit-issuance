@@ -71,7 +71,9 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
     if (name === 'time_date' && processedValue) {
       const date = new Date(processedValue);
       date.setDate(date.getDate() + 2);
-      const validUntil = date.toISOString().slice(0, 16);
+      // Use local timezone offset for calculation
+      const tzOffset = date.getTimezoneOffset() * 60000;
+      const validUntil = new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
       newData.valid_until = validUntil;
     }
 
