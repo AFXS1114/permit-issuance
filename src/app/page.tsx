@@ -6,12 +6,13 @@ import Auth from '@/components/Auth';
 import Certificate, { CertificateData } from '@/components/Certificate';
 import PermitForm from '@/components/PermitForm';
 import AnalyticsView from '@/components/AnalyticsView';
+import ReportsView from '@/components/ReportsView';
 import { Plus, LogOut, FileText, Trash2, Edit, Search, Filter, CheckCircle, Clock, MapPin, X, Users, Building2, BarChart3, Calendar } from 'lucide-react';
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'manage-brokers' | 'create' | 'edit' | 'analytics'>('list');
+  const [view, setView] = useState<'list' | 'select-broker' | 'add-broker' | 'manage-brokers' | 'create' | 'edit' | 'analytics' | 'reports'>('list');
   const [permits, setPermits] = useState<any[]>([]);
   const [brokers, setBrokers] = useState<any[]>([]);
   const [selectedBroker, setSelectedBroker] = useState<any>(null);
@@ -367,6 +368,7 @@ export default function Home() {
             <nav className="hidden md:flex items-center gap-8 mr-4">
               <button onClick={() => setView('list')} className={`text-sm font-semibold transition ${view === 'list' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Dashboard</button>
               <button onClick={() => setView('analytics')} className={`text-sm font-semibold transition ${view === 'analytics' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Analytics</button>
+              <button onClick={() => setView('reports')} className={`text-sm font-semibold transition ${view === 'reports' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}>Reports</button>
               <button className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition">Settings</button>
             </nav>
             <div className="h-8 w-[1px] bg-slate-200 mx-2"></div>
@@ -698,6 +700,10 @@ export default function Home() {
 
         {view === 'analytics' && (
           <AnalyticsView permits={permits} brokers={brokers} />
+        )}
+
+        {view === 'reports' && (
+          <ReportsView permits={permits} brokers={brokers} />
         )}
 
         {view === 'manage-brokers' && (
