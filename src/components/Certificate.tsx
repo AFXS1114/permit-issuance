@@ -118,7 +118,7 @@ const Certificate: React.FC<{ data: CertificateData }> = ({ data }) => {
         <div className="signature-image-container">
           <img src="/signature.png" className="signature-image" alt="Signature" />
         </div>
-        <p className="signer-name">FRANCISCO ROMEO G. ESCANDOR JR</p>
+        <p className="signer-name">FRANCISCO ROMEO G. ESCANDOR, JR.</p>
         <p className="signer-title">CFP/BFPC, OIC/Port Manager</p>
       </div>
 

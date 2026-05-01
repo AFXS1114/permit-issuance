@@ -12,7 +12,7 @@ interface PermitFormProps {
 
 const InputGroup = ({ label, name, value, onChange, type = "text", placeholder = "", icon: Icon, readOnly = false }: any) => (
   <div className="space-y-1.5">
-    <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">{label}</label>
+    <label className="text-[11px] font-bold text-black uppercase tracking-wider ml-1">{label}</label>
     <div className="relative group">
       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-500 transition-colors">
         {Icon && <Icon size={16} />}
@@ -24,7 +24,14 @@ const InputGroup = ({ label, name, value, onChange, type = "text", placeholder =
         onChange={onChange}
         readOnly={readOnly}
         placeholder={placeholder}
-        className={`w-full pl-11 pr-4 py-3 border border-slate-100 rounded-2xl text-sm font-medium transition-all outline-none ${readOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-slate-50 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500'}`}
+        className={`w-full pl-11 pr-4 py-3 
+  border-2 border-black-300 
+  rounded-2xl text-sm font-medium 
+  transition-all outline-none
+  ${readOnly
+            ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
+            : 'bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
+          }`}
       />
     </div>
   </div>
@@ -94,24 +101,28 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="col-span-2">
-            <InputGroup label="Permit ID (PTCB No.)" name="permit_id" value={data.permit_id} onChange={handleChange} readOnly icon={Tag} />
+          <div className="  col-span-2">
+            <InputGroup label="Recipient Name" name="recipient_name" value={data.recipient_name} onChange={handleChange} readOnly icon={User} />
+
           </div>
-          <InputGroup label="Business Name" name="business_name" value={data.business_name} onChange={handleChange} readOnly icon={Building2} />
-          <InputGroup label="Recipient Name" name="recipient_name" value={data.recipient_name} onChange={handleChange} readOnly icon={User} />
-          <InputGroup label="Business Location" name="business_location" value={data.business_location} onChange={handleChange} readOnly icon={MapPin} />
-          <InputGroup label="Role / Designation" name="role" value={data.role} onChange={handleChange} readOnly icon={Tag} />
+          {/* this hides the broker information from the form  */}
+          <div className="sr-only">
+            <InputGroup label="Business Name" name="business_name" value={data.business_name} onChange={handleChange} readOnly icon={Building2} />
+            <InputGroup label="Business Location" name="business_location" value={data.business_location} onChange={handleChange} readOnly icon={MapPin} />
+            <InputGroup label="Permit ID (PTCB No.)" name="permit_id" value={data.permit_id} onChange={handleChange} readOnly icon={Tag} />
+            <InputGroup label="Role / Designation" name="role" value={data.role} onChange={handleChange} readOnly icon={Tag} />
+          </div>
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className=" space-y-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">2</div>
-          <h3 className="text-lg font-bold text-slate-800">Trip & Footer Information</h3>
+          <h3 className="text-lg font-bold text-slate-800">Trip Information</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="col-span-2">
+          <div className=" col-span-2">
             <InputGroup label="Issue Date" name="issue_date" type="date" value={data.issue_date} onChange={handleChange} icon={Calendar} />
           </div>
           <InputGroup label="Plate No." name="plate_no" value={data.plate_no} onChange={handleChange} placeholder="ABC-1234" />
@@ -146,7 +157,7 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
               </button>
             )}
           </div>
-          <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} readOnly />
+          {/* <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} readOnly /> */}
 
           <div className="relative">
             <InputGroup
@@ -182,10 +193,14 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
 
           <InputGroup label="No. of Box(es)" name="no_of_boxes" value={data.no_of_boxes} onChange={handleChange} />
           <InputGroup label="Ticket No." name="ticket_no" value={data.ticket_no} onChange={handleChange} placeholder="BS-0000" />
+          <div className="sr-only">
+            <InputGroup label="Origin" name="origin" value={data.origin} onChange={handleChange} readOnly />
+            <InputGroup label="Remarks" name="remarks" value={data.remarks} onChange={handleChange} readOnly />
+            <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
+            <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />
+          </div>
           <InputGroup label="Species" name="specie" value={data.specie} onChange={handleChange} />
-          <InputGroup label="Time / Date" name="time_date" type="datetime-local" value={data.time_date} onChange={handleChange} />
-          <InputGroup label="Valid Until" name="valid_until" type="datetime-local" value={data.valid_until} onChange={handleChange} />
-          <InputGroup label="Remarks" name="remarks" value={data.remarks} onChange={handleChange} />
+
         </div>
       </div>
 
