@@ -14,7 +14,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BFPC-PERISS",
-  description: "Permit Issuance and Intelligence System",
+  description: "Permit Issuance System",
+  manifest: "/manifest.json",
+  themeColor: "#2563eb",
 };
 
 export default function RootLayout({
