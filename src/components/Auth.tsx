@@ -109,23 +109,7 @@ const Auth = ({ onBypass }: { onBypass?: () => void }) => {
           </form>
 
           <div className="mt-8 text-center border-t border-slate-100 pt-6 space-y-4">
-            <button
-              onClick={() => {
-                if (onBypass) {
-                  onBypass();
-                } else {
-                  setEmail('admin@pfda.com');
-                  setPassword('123123');
-                  setTimeout(() => {
-                    const form = document.querySelector('form');
-                    form?.requestSubmit();
-                  }, 100);
-                }
-              }}
-              className="w-full py-3 bg-blue-50 text-blue-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-100 transition active:scale-95 border border-blue-100"
-            >
-              🚀 Quick Bypass (Admin Access)
-            </button>
+
 
             <button
               onClick={() => setIsSignUp(!isSignUp)}
