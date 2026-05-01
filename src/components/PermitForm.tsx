@@ -70,10 +70,10 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
     // Auto-calculate Valid Until
     if (name === 'time_date' && processedValue) {
       const date = new Date(processedValue);
-      date.setDate(date.getDate() + 2);
-      // Use local timezone offset for calculation
-      const tzOffset = date.getTimezoneOffset() * 60000;
-      const validUntil = new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+      const validDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
+      // Ensure we stay in local time by adjusting for offset before ISO conversion
+      const tzOffset = validDate.getTimezoneOffset() * 60000;
+      const validUntil = new Date(validDate.getTime() - tzOffset).toISOString().slice(0, 16);
       newData.valid_until = validUntil;
     }
 

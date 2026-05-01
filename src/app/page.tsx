@@ -585,6 +585,9 @@ export default function Home() {
                     key={broker.id}
                     onClick={() => {
                       setSelectedBroker(broker);
+                      const now = new Date();
+                      const validDate = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+                      
                       setFormData({
                         ...formData,
                         business_name: broker.business_name,
@@ -593,7 +596,11 @@ export default function Home() {
                         role: broker.role,
                         validity_start: broker.validity_start,
                         validity_end: broker.validity_end,
-                        permit_id: broker.permit_id
+                        permit_id: broker.permit_id,
+                        // Refresh time to the exact second of clicking
+                        issue_date: getLocalTime(now).split('T')[0],
+                        time_date: getLocalTime(now).slice(0, 16),
+                        valid_until: getLocalTime(validDate).slice(0, 16),
                       });
                       setView('create');
                     }}
