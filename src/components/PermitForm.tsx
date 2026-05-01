@@ -97,10 +97,8 @@ const PermitForm: React.FC<PermitFormProps> = ({ data, onChange, onSubmit, desti
           </div>
           <InputGroup label="Business Name" name="business_name" value={data.business_name} onChange={handleChange} readOnly icon={Building2} />
           <InputGroup label="Recipient Name" name="recipient_name" value={data.recipient_name} onChange={handleChange} readOnly icon={User} />
-          <div className="col-span-2">
-            <InputGroup label="Business Location" name="business_location" value={data.business_location} onChange={handleChange} readOnly icon={MapPin} />
-          </div>
-          <InputGroup label="Role / Designation" name="role" value={data.role} onChange={handleChange} readOnly />
+          <InputGroup label="Business Location" name="business_location" value={data.business_location} onChange={handleChange} readOnly icon={MapPin} />
+          <InputGroup label="Role / Designation" name="role" value={data.role} onChange={handleChange} readOnly icon={Tag} />
         </div>
       </div>
 
