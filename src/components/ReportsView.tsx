@@ -27,11 +27,14 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
         p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.recipient_name?.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const issueDate = p.issue_date; // Assuming YYYY-MM-DD
+      const issueDate = p.issue_date;
       const matchesStart = !startDate || issueDate >= startDate;
       const matchesEnd = !endDate || issueDate <= endDate;
 
-      return matchesBroker && matchesSearch && matchesStart && matchesEnd;
+      // If a broker is selected, ignore the date range
+      const dateCondition = brokerFilter ? true : (matchesStart && matchesEnd);
+
+      return matchesBroker && matchesSearch && dateCondition;
     });
   }, [permits, brokerFilter, searchQuery, startDate, endDate]);
 
