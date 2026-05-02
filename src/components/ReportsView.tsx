@@ -22,11 +22,12 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
     return permits.filter(p => {
       const brokerName = p.rec_brokers_info?.business_name || '';
       const matchesBroker = !brokerFilter || brokerName === brokerFilter;
-      const matchesSearch = !searchQuery || 
+      const matchesSearch = !searchQuery ||
         brokerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.permit_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.recipient_name?.toLowerCase().includes(searchQuery.toLowerCase());
-      
+        p.recipient_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.destination?.toLowerCase().includes(searchQuery.toLowerCase());
+
       const issueDate = p.issue_date;
       const matchesStart = !startDate || issueDate >= startDate;
       const matchesEnd = !endDate || issueDate <= endDate;
@@ -102,15 +103,15 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
           <h2 className="text-2xl font-black text-slate-800 tracking-tight">Reporting Center</h2>
           <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Data Export & Audit Logs</p>
         </div>
-        
+
         <div className="flex flex-wrap items-center gap-3">
-          <button 
+          <button
             onClick={exportToExcel}
             className="flex items-center gap-2 px-5 py-2.5 bg-emerald-50 text-emerald-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-100 transition border border-emerald-100"
           >
             <FileSpreadsheet className="w-4 h-4" /> Export Excel
           </button>
-          <button 
+          <button
             onClick={exportToPDF}
             className="flex items-center gap-2 px-5 py-2.5 bg-rose-50 text-rose-600 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-rose-100 transition border border-rose-100"
           >
@@ -123,7 +124,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900/5 p-6 rounded-[2rem] border border-slate-100">
         <div className="relative group">
           <Users className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <select 
+          <select
             value={brokerFilter}
             onChange={(e) => setBrokerFilter(e.target.value)}
             className="w-full pl-11 pr-4 py-3 bg-white border-none rounded-2xl text-sm font-semibold focus:ring-2 focus:ring-blue-100 transition appearance-none"
@@ -137,7 +138,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
 
         <div className="relative group">
           <Calendar className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input 
+          <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
@@ -148,7 +149,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
 
         <div className="relative group">
           <Calendar className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input 
+          <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
@@ -159,7 +160,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
 
         <div className="relative group">
           <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input 
+          <input
             type="text"
             placeholder="SEARCH ANYTHING..."
             value={searchQuery}
@@ -217,7 +218,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
             SHOWING <span className="text-slate-900">{paginatedData.length}</span> OF <span className="text-slate-900">{filteredData.length}</span> RECORDS
           </p>
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
               className="p-2 rounded-xl border border-slate-200 hover:bg-white transition disabled:opacity-30"
@@ -225,7 +226,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
               <ChevronLeft className="w-4 h-4" />
             </button>
             <span className="text-xs font-black text-slate-600 px-4">PAGE {currentPage} OF {totalPages || 1}</span>
-            <button 
+            <button
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages || totalPages === 0}
               className="p-2 rounded-xl border border-slate-200 hover:bg-white transition disabled:opacity-30"
@@ -240,7 +241,7 @@ const ReportsView: React.FC<ReportsViewProps> = ({ permits, brokers }) => {
 };
 
 const Users = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
 );
 
 export default ReportsView;
