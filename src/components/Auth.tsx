@@ -113,7 +113,7 @@ const Auth = ({ onBypass }: { onBypass?: () => void }) => {
 
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className="block w-full text-xs font-bold text-slate-400 hover:text-blue-600 transition uppercase tracking-widest"
+              className="sr-only block w-full text-xs font-bold text-slate-400 hover:text-blue-600 transition uppercase tracking-widest"
             >
               {isSignUp ? 'Back to Secure Login' : 'Request Access / Sign Up'}
             </button>
